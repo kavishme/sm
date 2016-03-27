@@ -6,6 +6,7 @@ import javax.json.stream.JsonParser;
 import javax.ws.rs.GET;
 import java.lang.Exception;
 import java.net.ConnectException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.*;
@@ -18,7 +19,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-
+import java.util.logging.*;
 import org.json.JSONObject;
 
 @Path("/restapi")
@@ -33,8 +34,9 @@ public class SMRest{
 	private Boolean autoResolve = false;
 	private Boolean isMaster = false;
 	File log1, log2;
-	File config = new File("smconfig.txt");
+	File config;
 	int version = 0;
+	
 	public SMRest(){
 		storage = SMFactory.getSM();
 		
@@ -44,8 +46,14 @@ public class SMRest{
 			log2 = new File("Partition2.log");
 			log2.createNewFile();
 			
+			String path1 = log1.getAbsolutePath();
+			java.nio.file.Path pa = Paths.get(path1);
+			pa = pa.getParent();
+			
+			pa = Paths.get(pa.toString(), "smconfig.txt");
+			config = new File(pa.toString());
 			//BufferedReader br = new BufferedReader(new FileReader("smconfig.txt"));
-			String configStr = new String(Files.readAllBytes(Paths.get("smconfig.txt")));
+			String configStr = new String(Files.readAllBytes(pa));
 			JSONObject js = new JSONObject(configStr);
 //			if(br.readLine().equals("slave"))
 //			{
@@ -107,7 +115,7 @@ public class SMRest{
 	@Path("/read/{key}")
 	public String read(@PathParam("key") String key) { 
 		
-		String responseString = "";
+		String responseString = "{\"Reply\": \"Fail\"}";
 		String ip = "";
 		WebTarget wt;
 		int status = 0;
@@ -137,12 +145,13 @@ public class SMRest{
 			partitioned = true;
 		}
 		
-		JSONObject js = new JSONObject(responseString);
+		
 		if(!partitioned)
 		{
 			try{
 				String value = storage.fetch(key);
 				responseString = value;
+				responseString = URLDecoder.decode(responseString, "UTF-8");
 			}
 			catch(Exception e){
 				responseString =  "{\"Reply\": \"Fail\"}";
@@ -150,14 +159,14 @@ public class SMRest{
 		}
 		else
 		{
-			js.append("Reply", "In Partition. No read and writes allowed. Data may not be consisten.");
-			if(!autoResolve)
-				js.append("Info", "After resolving partition go to ../resolve because autoResolve if off.");
+			responseString = "{\"Reply\": \"In Partition. No read and writes allowed. Data may not be consisten.\"}";
+			//if(!autoResolve)
+			//	js.append("Info", "After resolving partition go to ../resolve because autoResolve if off.");
 		}
-		
-		js.append("ip", ip3);
+		JSONObject js = new JSONObject(responseString);
+		js.append("address", ip3);
 		js.append("DBVersion", version);
-		return js.toString();
+		return js.toString(8);
 	}
 //	@GET
 //	@Produces(MediaType.APPLICATION_JSON)
@@ -315,7 +324,7 @@ public class SMRest{
 			js.append("Node2", "Not Synced");
 		}
 
-		return js.toString();
+		return js.toString(8);
 	}
 	
 	@GET
@@ -382,18 +391,19 @@ public class SMRest{
 		//++version;
 		BufferedWriter wr;
 		try {
-			wr = new BufferedWriter(new FileWriter(config));		
-			String configStr = new String(Files.readAllBytes(Paths.get("smconfig.txt")));
+					
+			String configStr = new String(Files.readAllBytes(Paths.get(config.getAbsolutePath())));
 			JSONObject js = new JSONObject(configStr);
 			
 			js.put("partition", partitioned);
 			js.put("autoResolve", autoResolve);
 			js.put("version", version);
 			
+			wr = new BufferedWriter(new FileWriter(config));
 			wr.write(js.toString());
 			wr.newLine();
 			wr.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
