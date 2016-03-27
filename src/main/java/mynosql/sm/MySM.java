@@ -1,11 +1,10 @@
 package mynosql.sm;
-import java.util.*;
 
 //import SM.CannotDeleteException;
 //import SM.IOException;
 //import SM.NotFoundException;
 
-import java.io.*;
+
 
 /**
  *  Description of the Class
@@ -18,7 +17,8 @@ public class MySM implements SM {
 	private SM sm;
 
 
-  public SM.OID getOID( byte[] oidbytes ) {
+  @Override
+public SM.OID getOID( byte[] oidbytes ) {
 	return null ;
   }
 
@@ -42,9 +42,11 @@ public class MySM implements SM {
 	 *@exception  IOException  Description of Exception
 	 *@since
 	 */
+	@Override
 	public void store(String key, String value) throws IOException{
 		sm.store(key, value);
 	}
+	@Override
 	public SM.OID store(Record rec) throws IOException {
 		return sm.store(rec);
 	}
@@ -59,9 +61,11 @@ public class MySM implements SM {
 	 *@exception  IOException        Description of Exception
 	 *@since
 	 */
+	@Override
 	public String fetch(String key) throws NotFoundException, IOException{
 		return sm.fetch(key);
 	}
+	@Override
 	public Record fetch(SM.OID oid) throws NotFoundException, IOException {
 		return sm.fetch(oid);
 	}
@@ -73,6 +77,7 @@ public class MySM implements SM {
 	 *@exception  SM.IOException  Description of Exception
 	 *@since
 	 */
+	@Override
 	public void close() throws SM.IOException {
 		sm.close();
 	}
@@ -84,6 +89,7 @@ public class MySM implements SM {
 	 *@exception  SM.IOException  Description of Exception
 	 *@since
 	 */
+	@Override
 	public void flush()  {
 		try { sm.flush(); } catch (Exception e) {}
 	}
@@ -100,9 +106,11 @@ public class MySM implements SM {
 	 *@exception  IOException        Description of Exception
 	 *@since
 	 */
+	@Override
 	public void update(String key, String value) throws NotFoundException, IOException{
 		sm.update(key, value);
 	}
+	@Override
 	public SM.OID update(SM.OID oid, Record rec) throws NotFoundException, IOException {
 		return sm.update(oid, rec);
 	}
@@ -116,9 +124,11 @@ public class MySM implements SM {
 	 *@exception  CannotDeleteException  Description of Exception
 	 *@since
 	 */
+	@Override
 	public void delete(String key) throws NotFoundException, CannotDeleteException{
 		sm.delete(key);
 	}
+	@Override
 	public void delete(SM.OID oid) throws NotFoundException, CannotDeleteException {
 		sm.delete(oid);
 	}

@@ -1,15 +1,4 @@
 package mynosql.sm;
-import java.nio.channels.FileChannel;
-import java.nio.channels.Channel;
-import java.nio.MappedByteBuffer;
-import java.util.HashMap;
-import java.util.TreeSet;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.io.File;
-import java.io.RandomAccessFile;
-import java.io.IOException;
 
 public class StorageManager extends AbstractManager
 {
@@ -56,7 +45,8 @@ public class StorageManager extends AbstractManager
     }
 
 
-    public int store ( byte _record[] ) throws Exception
+    @Override
+	public int store ( byte _record[] ) throws Exception
     {
         if ( false ) System.out.println( "Came to store" );
 
@@ -113,7 +103,8 @@ public class StorageManager extends AbstractManager
         }
     }
 
-    public int update ( int _oid, byte _record[] ) throws Exception
+    @Override
+	public int update ( int _oid, byte _record[] ) throws Exception
     {
         Record storedRecord = findRecordIndex( _oid );
         if ( storedRecord == null ) throw new SM.NotFoundException();
@@ -165,7 +156,8 @@ public class StorageManager extends AbstractManager
         return i.intValue();
     }
 
-    public void delete ( int _oid ) throws Exception
+    @Override
+	public void delete ( int _oid ) throws Exception
     {
         Record record = findRecordIndex( _oid );
         if ( record == null ) throw new SM.NotFoundException();
@@ -176,7 +168,8 @@ public class StorageManager extends AbstractManager
         }
     }
 
-    public byte[] find ( int _oid ) throws Exception
+    @Override
+	public byte[] find ( int _oid ) throws Exception
     {
         Record record = findRecordIndex( _oid );
         if ( record == null ) throw new SM.NotFoundException();

@@ -188,6 +188,7 @@ public interface SM {
 		 * @return Description of the Returned Value
 		 * @since
 		 */
+		@Override
 		public boolean equals(Object o) {
 			if (this == o) {
 				return true;

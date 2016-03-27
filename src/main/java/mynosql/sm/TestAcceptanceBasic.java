@@ -103,6 +103,7 @@ public class TestAcceptanceBasic extends TestCase
         }
     }
 
+	@Override
 	protected void setUp()
 	{ 
 		if ( s_smInstance == null )

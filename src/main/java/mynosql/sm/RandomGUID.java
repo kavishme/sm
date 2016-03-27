@@ -198,7 +198,8 @@ public class RandomGUID extends Object {
      * (Useful for SQL Server UniqueIdentifiers, etc.)
      * Example: C2FEEEAC-CFCD-11D1-8B05-00600806D9B6
      */
-    public String toString() {
+    @Override
+	public String toString() {
         String raw = valueAfterMD5.toUpperCase();
         StringBuffer sb = new StringBuffer();
         sb.append(raw.substring(0, 8));

@@ -58,7 +58,7 @@ public class TestAcceptanceCrossFunctional extends TestCase {
 
     try {
       SM.Record found = null ;
-      rec1_oid = (SM.OID) sm.store(rec1);
+      rec1_oid = sm.store(rec1);
       found = sm.fetch(rec1_oid);
       assertNotNull( found ) ;              
     } catch (Exception e) {
@@ -81,7 +81,7 @@ public class TestAcceptanceCrossFunctional extends TestCase {
   
       try {
         rec1_data = sm.fetch(rec1_oid) ;
-        rec3_oid = (SM.OID) sm.update(rec1_oid, rec3);
+        rec3_oid = sm.update(rec1_oid, rec3);
         rec3_data = sm.fetch(rec3_oid);	
       } 
       catch (SM.NotFoundException nfe) {
@@ -107,7 +107,7 @@ public class TestAcceptanceCrossFunctional extends TestCase {
   
      try {
         SM.Record found = null ;
-        rec2_oid = (SM.OID) sm.store(rec2);
+        rec2_oid = sm.store(rec2);
         found = sm.fetch(rec2_oid);
         sm.delete(rec2_oid);
         found = sm.fetch(rec2_oid); // should throw exception
@@ -128,7 +128,8 @@ public class TestAcceptanceCrossFunctional extends TestCase {
    *
    *@since
    */
-  protected void setUp() {
+  @Override
+protected void setUp() {
 
     if (sm == null) {
       sm = SMFactory.getInstance();

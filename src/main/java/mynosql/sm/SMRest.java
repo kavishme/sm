@@ -1,11 +1,7 @@
 package mynosql.sm;
 
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.stream.JsonParser;
 import javax.ws.rs.GET;
 import java.lang.Exception;
-import java.net.ConnectException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,7 +15,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import java.util.logging.*;
 import org.json.JSONObject;
 
 @Path("/restapi")

@@ -72,7 +72,8 @@ public class TestStressLargeRecords extends TestCase
         return result;
     }
 
-    protected void setUp ()
+    @Override
+	protected void setUp ()
     {
         if ( s_smInstance == null )
         {

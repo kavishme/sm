@@ -6,9 +6,7 @@ import junit.framework.Assert;
 
 import java.util.*;
 import java.nio.channels.FileChannel;
-import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
-import java.nio.BufferOverflowException;
 import java.io.File;
 import java.io.RandomAccessFile;
 
@@ -124,6 +122,7 @@ public class TestXMLFileLoad extends TestCase {
 	 *
 	 *@since
 	 */
+	@Override
 	protected void setUp() {
 
 		if (sm == null) {

@@ -6,8 +6,6 @@ import junit.framework.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collection;
-import java.util.Collections;
 
 
 public class TestAcceptanceOID extends TestCase
@@ -80,7 +78,8 @@ public class TestAcceptanceOID extends TestCase
         }
     }
 
-    protected void setUp ()
+    @Override
+	protected void setUp ()
     {
         if ( s_smInstance == null )
         {

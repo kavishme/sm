@@ -1,6 +1,4 @@
 package mynosql.sm;
-import java.util.*;
-import java.io.*;
 
 /**
  *  Description of the Class
@@ -13,7 +11,8 @@ public class SMImplementation implements SM {
 	private SM sm;
 
 
-  public SM.OID getOID( byte[] oidbytes ) {
+  @Override
+public SM.OID getOID( byte[] oidbytes ) {
 	return null ;
   }
 
@@ -37,21 +36,26 @@ public class SMImplementation implements SM {
 	 *@exception  IOException  Description of Exception
 	 *@since
 	 */
+	@Override
 	public void store(String key, String value) throws  SM.IOException {
 
 	}
 
+	@Override
 	public String fetch(String key) throws  SM.NotFoundException,  SM.IOException {
 		return "";
 	}
 
+	@Override
 	public void update(String key, String value) throws  SM.NotFoundException,  SM.IOException {
 
 	}
 
+	@Override
 	public void delete(String key) throws  SM.NotFoundException,  SM.CannotDeleteException {
 
 	}
+	@Override
 	public SM.OID store(Record rec) throws IOException {
 		return sm.store(rec);
 	}
@@ -66,6 +70,7 @@ public class SMImplementation implements SM {
 	 *@exception  IOException        Description of Exception
 	 *@since
 	 */
+	@Override
 	public Record fetch(SM.OID oid) throws NotFoundException, IOException {
 		return sm.fetch(oid);
 	}
@@ -77,6 +82,7 @@ public class SMImplementation implements SM {
 	 *@exception  SM.IOException  Description of Exception
 	 *@since
 	 */
+	@Override
 	public void close() throws SM.IOException {
 		sm.close();
 	}
@@ -88,6 +94,7 @@ public class SMImplementation implements SM {
 	 *@exception  SM.IOException  Description of Exception
 	 *@since
 	 */
+	@Override
 	public void flush()  {
 		try { sm.flush(); } catch (Exception e) {}
 	}
@@ -104,6 +111,7 @@ public class SMImplementation implements SM {
 	 *@exception  IOException        Description of Exception
 	 *@since
 	 */
+	@Override
 	public SM.OID update(SM.OID oid, Record rec) throws NotFoundException, IOException {
 		return sm.update(oid, rec);
 	}
@@ -117,6 +125,7 @@ public class SMImplementation implements SM {
 	 *@exception  CannotDeleteException  Description of Exception
 	 *@since
 	 */
+	@Override
 	public void delete(SM.OID oid) throws NotFoundException, CannotDeleteException {
 		sm.delete(oid);
 	}

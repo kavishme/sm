@@ -1,7 +1,6 @@
 package mynosql.sm;
 import java.util.*;
 import java.nio.*;
-import java.nio.channels.*;
 
 
 /**

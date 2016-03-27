@@ -16,31 +16,38 @@ import java.util.*;
 class CacheManager implements SM {
 
 
-  public SM.OID getOID( byte[] oidbytes ) {
+  @Override
+public SM.OID getOID( byte[] oidbytes ) {
 	return null ;
   }
 
 	public CacheManager() {
 		fileStorage = new SMImplVersion2();
 	}
+	@Override
 	public void store(String key, String value) throws  SM.IOException {
 
 	}
 
+	@Override
 	public String fetch(String key) throws  SM.NotFoundException,  SM.IOException {
 		return "";
 	}
 
+	@Override
 	public void update(String key, String value) throws  SM.NotFoundException,  SM.IOException {
 
 	}
 
+	@Override
 	public void delete(String key) throws  SM.NotFoundException,  SM.CannotDeleteException {
 
 	}
+	@Override
 	public SM.OID store(SM.Record _rec) throws SM.IOException {
 		return fileStorage.store(_rec);
 	}
+	@Override
 	public SM.Record fetch(SM.OID _oid) throws SM.NotFoundException, SM.IOException {
 		SM.Record tmp;
 		CacheData cData = (CacheData)map.get(_oid.getKey());
@@ -59,6 +66,7 @@ class CacheManager implements SM {
 		}
 		return tmp;
 	}
+	@Override
 	public SM.OID update(SM.OID _oid, SM.Record _rec) throws SM.NotFoundException, SM.IOException {
 		SM.OID oid = fileStorage.update(_oid, _rec);
 		SM.Record record = fileStorage.fetch(oid);
@@ -89,13 +97,16 @@ class CacheManager implements SM {
 			}
 		} while(loop);
 	}
+	@Override
 	public void delete(SM.OID _oid) throws SM.NotFoundException, SM.CannotDeleteException {
 		vector.remove(_oid.getKey());
 		map.remove(_oid.getKey());
 		fileStorage.delete(_oid);
 	}
+	@Override
 	public void flush() {
 	}
+	@Override
 	public void close() throws IOException {
 		map.clear();
 		vector.clear();

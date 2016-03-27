@@ -1,12 +1,5 @@
 package mynosql.sm;
-import java.nio.channels.FileChannel;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
-import java.nio.BufferOverflowException;
-import java.io.File;
-import java.io.RandomAccessFile;
-import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FileStorage implements SM {
@@ -16,10 +9,12 @@ public class FileStorage implements SM {
 	// private static final String FILE_NAME = "file.data";
 	// private static final long MAX_FILE_SIZE = 100000000;
 
+	@Override
 	public SM.OID getOID(byte[] oidbytes) {
 		return null;
 	}
 
+	@Override
 	public void flush() {
 		try {
 			close();
@@ -56,22 +51,27 @@ public class FileStorage implements SM {
 		}
 	}
 
+	@Override
 	public void store(String key, String value) throws  SM.IOException {
 
 	}
 
+	@Override
 	public String fetch(String key) throws  SM.NotFoundException,  SM.IOException {
 		return "";
 	}
 
+	@Override
 	public void update(String key, String value) throws  SM.NotFoundException,  SM.IOException {
 
 	}
 
+	@Override
 	public void delete(String key) throws  SM.NotFoundException,  SM.CannotDeleteException {
 
 	}
 
+	@Override
 	public SM.OID store(SM.Record _rec) throws SM.IOException {
 		if (_rec == null || _rec.data == null)
 			throw new SMExceptionImpl(new IllegalArgumentException("Record cannot be null"));
@@ -86,6 +86,7 @@ public class FileStorage implements SM {
 		return l_oid;
 	}
 
+	@Override
 	public SM.Record fetch(SM.OID _oid) throws SM.NotFoundException, SM.IOException {
 		if (_oid == null)
 			throw new SMExceptionImpl(new IllegalArgumentException("OID cannot be null"));
@@ -111,6 +112,7 @@ public class FileStorage implements SM {
 		return l_record;
 	}
 
+	@Override
 	public SM.OID update(SM.OID _oid, SM.Record _rec) throws SM.NotFoundException, SM.IOException {
 		FileStorage.OID resultOID = null;
 		try {
@@ -123,6 +125,7 @@ public class FileStorage implements SM {
 		return resultOID;
 	}
 
+	@Override
 	public void delete(SM.OID _oid) throws SM.NotFoundException, SM.CannotDeleteException {
 		FileStorage.OID l_oid = (FileStorage.OID) _oid;
 		try {
@@ -133,6 +136,7 @@ public class FileStorage implements SM {
 		}
 	}
 
+	@Override
 	public void close() throws IOException {
 		try {
 			m_storageManager.commit();
@@ -171,6 +175,7 @@ public class FileStorage implements SM {
 			super(size);
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			System.out.println("Came to equals");
 			if (this == o) {
@@ -216,10 +221,12 @@ public class FileStorage implements SM {
 		 *
 		 * @return The key value
 		 */
+		@Override
 		public String getKey() {
 			return Integer.toString(this.key);
 		}
 
+		@Override
 		public byte[] toBytes() {
 			return getKey().getBytes();
 		}

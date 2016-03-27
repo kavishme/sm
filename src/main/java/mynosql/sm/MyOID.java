@@ -1,7 +1,4 @@
-package mynosql.sm;
-import java.util.*;
-import java.io.*;
-import java.nio.*; 
+package mynosql.sm; 
 
 public class MyOID implements SM.OID {
     private byte[] key;
@@ -31,7 +28,8 @@ public class MyOID implements SM.OID {
      *@return    The key value
      *@since
      */
-    public String getKey() {
+    @Override
+	public String getKey() {
 	    if ( this.keyType == 1 ) {
 		    return Integer.toString(this.intKey);
 	    }
@@ -47,7 +45,8 @@ public class MyOID implements SM.OID {
      *@return    Description of the Returned Value
      *@since
      */
-    public byte[] toBytes() {
+    @Override
+	public byte[] toBytes() {
       return this.key ;
     }
   }

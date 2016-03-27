@@ -1,11 +1,6 @@
 package mynosql.sm;
 import java.util.*;
 
-import javax.naming.StringRefAddr;
-
-import org.apache.poi.ss.formula.functions.Value;
-
-import java.io.*;
 import java.nio.*;
 
 /**
@@ -49,7 +44,7 @@ public class SMImplVersion2 implements SM {
 	private byte[] trans_table_find_entry(byte[] find_guid) {
 
 		// try to avoid disk i/o
-		byte[] cachehit = (byte[]) lookupcache.get(find_guid);
+		byte[] cachehit = lookupcache.get(find_guid);
 		if (cachehit != null)
 			return cachehit;
 
@@ -433,6 +428,7 @@ public class SMImplVersion2 implements SM {
 	 *                Description of Exception
 	 * @since
 	 */
+	@Override
 	public void store(String key, String value) throws IOException {
 		
 		Record therec;
@@ -476,6 +472,7 @@ public class SMImplVersion2 implements SM {
 			System.out.println("Stored With OID: " + Util.toHexString(guid));
 	}
 	
+	@Override
 	public SM.OID store(Record rec) throws IOException {
 
 		Record therec = null;
@@ -551,6 +548,7 @@ public class SMImplVersion2 implements SM {
 	 * @since
 	 */
 	
+	@Override
 	public String fetch(String key) throws NotFoundException, IOException {
 
 		SM.OID oid = new OID(Util.generateGUID(key));
@@ -558,6 +556,7 @@ public class SMImplVersion2 implements SM {
 		return new String(rec.getBytes(0, 0));
 	}
 	
+	@Override
 	public Record fetch(SM.OID oid) throws NotFoundException, IOException {
 
 //		Object smallrec = null;
@@ -582,7 +581,7 @@ public class SMImplVersion2 implements SM {
 
 			ByteBuffer recid_buf = ByteBuffer.wrap(recid);
 			int rec_vol_id = recid_buf.getInt();
-			int rec_page_id = (int) recid_buf.getShort();
+			int rec_page_id = recid_buf.getShort();
 			Page datapage = data_volume.getPage(rec_page_id);
 			byte[] data = datapage.getRecord(recid);
 			if (data == null)
@@ -606,12 +605,14 @@ public class SMImplVersion2 implements SM {
 	 *                Description of Exception
 	 * @since
 	 */
+	@Override
 	public void close() throws SM.IOException {
 		master_volume.close();
 		data_volume.close();
 		index_volume.close();
 	}
 
+	@Override
 	public void flush() {
 		try {
 			close();
@@ -635,6 +636,7 @@ public class SMImplVersion2 implements SM {
 	 */
 
 	
+	@Override
 	public void update(String key, String value) throws NotFoundException, IOException {
 
 		try {
@@ -644,7 +646,7 @@ public class SMImplVersion2 implements SM {
 			if (recid == null)
 				throw new NotFoundException();
 			ByteBuffer recid_buf = ByteBuffer.wrap(recid);
-			int rec_page_id = (int) recid_buf.getShort();
+			int rec_page_id = recid_buf.getShort();
 			Page datapage = data_volume.getPage(rec_page_id);
 			byte[] new_rec_id = datapage.updateRecord(recid, value.getBytes());
 			trans_table_update_entry(oid.toBytes(), new_rec_id);
@@ -656,6 +658,7 @@ public class SMImplVersion2 implements SM {
 	}
 
 	
+	@Override
 	public SM.OID update(SM.OID oid, Record rec) throws NotFoundException,
 			IOException {
 
@@ -679,7 +682,7 @@ public class SMImplVersion2 implements SM {
 			if (recid == null)
 				throw new NotFoundException();
 			ByteBuffer recid_buf = ByteBuffer.wrap(recid);
-			int rec_page_id = (int) recid_buf.getShort();
+			int rec_page_id = recid_buf.getShort();
 			Page datapage = data_volume.getPage(rec_page_id);
 			byte[] new_rec_id = datapage.updateRecord(recid, rec.getBytes(0, 0));
 			trans_table_update_entry(oid.toBytes(), new_rec_id);
@@ -701,11 +704,13 @@ public class SMImplVersion2 implements SM {
 	 *                Description of Exception
 	 * @since
 	 */
+	@Override
 	public void delete(String key) throws NotFoundException, CannotDeleteException {
 		SM.OID oid = new OID(Util.generateGUID(key));
 		delete(oid);
 	}
 	
+	@Override
 	public void delete(SM.OID oid) throws NotFoundException,
 			CannotDeleteException {
 
@@ -725,7 +730,7 @@ public class SMImplVersion2 implements SM {
 			if (recid == null)
 				throw new NotFoundException();
 			ByteBuffer recid_buf = ByteBuffer.wrap(recid);
-			int rec_page_id = (int) recid_buf.getShort();
+			int rec_page_id = recid_buf.getShort();
 			Page datapage = data_volume.getPage(rec_page_id);
 			datapage.deleteRecord(recid);
 			trans_table_delete_entry(oid.toBytes());
@@ -735,6 +740,7 @@ public class SMImplVersion2 implements SM {
 
 	}
 
+	@Override
 	public SM.OID getOID(byte[] oidbytes) {
 		return new SMImplVersion2.OID(oidbytes);
 	}
@@ -769,6 +775,7 @@ public class SMImplVersion2 implements SM {
 		 * @return The key value
 		 * @since
 		 */
+		@Override
 		public String getKey() {
 			return Util.toHexString(this.key);
 		}
@@ -779,6 +786,7 @@ public class SMImplVersion2 implements SM {
 		 * @return Description of the Returned Value
 		 * @since
 		 */
+		@Override
 		public byte[] toBytes() {
 
 			return this.key;

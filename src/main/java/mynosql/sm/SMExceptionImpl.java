@@ -20,7 +20,8 @@ public class SMExceptionImpl extends SM.IOException
         m_originalException = new Exception( _message );
     }
 
-    public String getMessage ()
+    @Override
+	public String getMessage ()
     {
         if ( m_msg != null )
             return m_msg;

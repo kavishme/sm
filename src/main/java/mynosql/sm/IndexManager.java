@@ -256,7 +256,8 @@ public class IndexManager
             m_recid = _recid;
         }
 
-        public int compareTo ( Object o )
+        @Override
+		public int compareTo ( Object o )
         {
             IndexRecord ir = ( IndexRecord ) o;
             String irSt = Util.toHexString( ir.getGuid() );
@@ -264,7 +265,8 @@ public class IndexManager
             return thisSt.compareTo( irSt );
         }
 
-        public boolean equals ( Object o )
+        @Override
+		public boolean equals ( Object o )
         {
             if ( this == o ) return true;
             if ( !(o instanceof IndexRecord) ) return false;
@@ -277,12 +279,14 @@ public class IndexManager
             return true;
         }
 
-        public int hashCode ()
+        @Override
+		public int hashCode ()
         {
             return 0;
         }
 
-        public String toString ()
+        @Override
+		public String toString ()
         {
             if ( DEBUG )
             {

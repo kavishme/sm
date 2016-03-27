@@ -1,6 +1,5 @@
 package mynosql.sm;
 import java.util.*;
-import java.io.*;
 
 /**
  * Description of the Class
@@ -15,6 +14,7 @@ public class SMImplVersion1 implements SM {
 	public SMImplVersion1() {
 	}
 
+	@Override
 	public SM.OID getOID(byte[] oidbytes) {
 		return null;
 	}
@@ -103,21 +103,26 @@ public class SMImplVersion1 implements SM {
 	 * @exception IOException
 	 *                Description of Exception
 	 */
+	@Override
 	public void store(String key, String value) throws  SM.IOException {
 
 	}
 
+	@Override
 	public String fetch(String key) throws  SM.NotFoundException,  SM.IOException {
 		return "";
 	}
 
+	@Override
 	public void update(String key, String value) throws  SM.NotFoundException,  SM.IOException {
 
 	}
 
+	@Override
 	public void delete(String key) throws  SM.NotFoundException,  SM.CannotDeleteException {
 
 	}
+	@Override
 	public SM.OID store(Record rec) throws IOException {
 		OID oid = new OID(rec.hashCode());
 		this.buffer.put(oid.getKey(), rec);
@@ -135,6 +140,7 @@ public class SMImplVersion1 implements SM {
 	 * @exception IOException
 	 *                Description of Exception
 	 */
+	@Override
 	public Record fetch(SM.OID oid) throws NotFoundException, IOException {
 		Object rec = null;
 		rec = this.buffer.get(oid.getKey());
@@ -145,10 +151,12 @@ public class SMImplVersion1 implements SM {
 		}
 	}
 
+	@Override
 	public void close() throws SM.IOException {
 
 	}
 
+	@Override
 	public void flush() {
 
 	}
@@ -166,6 +174,7 @@ public class SMImplVersion1 implements SM {
 	 * @exception IOException
 	 *                Description of Exception
 	 */
+	@Override
 	public SM.OID update(SM.OID oid, Record rec) throws NotFoundException,
 			IOException {
 		this.buffer.remove(oid.getKey());
@@ -184,6 +193,7 @@ public class SMImplVersion1 implements SM {
 	 * @exception CannotDeleteException
 	 *                Description of Exception
 	 */
+	@Override
 	public void delete(SM.OID oid) throws NotFoundException,
 			CannotDeleteException {
 		this.buffer.remove(oid.getKey());
@@ -208,6 +218,7 @@ public class SMImplVersion1 implements SM {
 			this.key = key;
 		}
 
+		@Override
 		public byte[] toBytes() {
 			return getKey().getBytes();
 		}
@@ -217,6 +228,7 @@ public class SMImplVersion1 implements SM {
 		 * 
 		 * @return The key value
 		 */
+		@Override
 		public String getKey() {
 			return Integer.toString(this.key);
 		}
